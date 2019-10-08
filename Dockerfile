@@ -139,7 +139,7 @@ ENV DISPLAY=":99" \
 
 # setup the entrypoint script (starts the xvfb and vnc session)
 COPY ./entrypoint_code.sh /
-RUN dos2unix /entrypoint_code.sh
+RUN dos2unix /entrypoint_code.sh && chmod +x /entrypoint_code.sh
 ENTRYPOINT ["/entrypoint_code.sh"]
 
 WORKDIR /workspace
