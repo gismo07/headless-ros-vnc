@@ -116,8 +116,8 @@ RUN apt-get install wget && mkdir /code-server && \
     | tar xvz --strip-components=1 -C /code-server
 
 
-# get some rqt tools
-RUN apt-get install -y ros-melodic-rqt ros-melodic-rqt-common-plugins 
+# get some rqt tools and of course rviz
+RUN apt-get install -y ros-melodic-rqt ros-melodic-rqt*
 RUN apt-get install -y jwm openbox ros-melodic-rviz
 
 # get and setup novnc

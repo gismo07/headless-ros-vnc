@@ -15,7 +15,7 @@ jwm &
 #openbox &
 
 echo "starting noVNC"
-/novnc/noVNC/utils/launch.sh --vnc localhost:5900
+/novnc/noVNC/utils/launch.sh --vnc localhost:5900 &
 
 source /opt/ros/melodic/setup.bash
 /code-server/code-server --user-data-dir /workspace --allow-http --password $PASSWORD --auth password
