@@ -142,9 +142,13 @@ COPY ./entrypoint_code.sh /
 RUN dos2unix /entrypoint_code.sh && chmod +x /entrypoint_code.sh
 ENTRYPOINT ["/entrypoint_code.sh"]
 
+# source ros for every new terminal session
+RUN echo source /opt/ros/melodic/setup.bash >> /.bashrc
+
+# set our workdir
 WORKDIR /workspace
 
-# expose the default vnc, code server and novnc port
+# expose the vnc, novnc and code-server ports
 EXPOSE 5900
-EXPOSE 8080
 EXPOSE 6080
+EXPOSE 8080
