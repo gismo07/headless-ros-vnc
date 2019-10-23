@@ -27,6 +27,15 @@ Or `docker-compose`
 docker-compose up -d
 ``` 
 
+### Known issue
+If the noVNC server is not accessable through the web interface, the virtual network has to be reseted:
+```
+docker-compose stop
+docker container prune -f
+docker network prune -f
+```
+After that you can start the service again.
+
  ## Access the environment
   - to open the IDE, simply open the browser and go to `localhost:80`. The password is currently set to `dev@ros`. 
   - to see rviz or some other gui stuff, open another browser tab `localhost:6080/vnc.html` and click connect.
