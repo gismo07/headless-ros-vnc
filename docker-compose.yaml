@@ -11,5 +11,12 @@ services:
               target: /my_ros_data
               volume:
                 nocopy: true
+            - type: volume
+              source: workspace
+              target: /workspace
+              volume:
+                nocopy: true
         image: johannhaselberger/headless-ros-vnc
 
+volumes:
+    workspace:
