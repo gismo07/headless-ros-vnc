@@ -27,7 +27,9 @@ Or `docker-compose`
 docker-compose up -d
 ``` 
 
-### Known issue
+### Known issues
+
+#### VNC not working
 If the noVNC server is not accessable through the web interface, the virtual network has to be reseted:
 ```
 docker-compose stop
@@ -36,9 +38,14 @@ docker network prune -f
 ```
 After that you can start the service again.
 
+#### Mounting errors on windows
+ - start docker with admin rights
+ - right click on the docker system tray icon -> Settings
+ - Under `Shared Drives` set the checkbox for the C drive
+
  ## Access the environment
-  - to open the IDE, simply open the browser and go to `localhost:80`. The password is currently set to `dev@ros`. 
-  - to see rviz or some other gui stuff, open another browser tab `localhost:6080/vnc.html` and click connect.
+  - to open the IDE, simply open the browser and go to [localhost:80](). The password is currently set to `dev@ros`. 
+  - to see rviz or some other gui stuff, open another browser tab [localhost:6080/vnc.html]() and click connect.
 
 ## Data storage
 Per default all perisistent data is located at the host pc (assuming windows for now) under `C:/ros-persistent-data`. Create this folder **before** starting the container.

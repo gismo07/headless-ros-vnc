@@ -142,8 +142,11 @@ COPY ./entrypoint_code.sh /
 RUN dos2unix /entrypoint_code.sh && chmod +x /entrypoint_code.sh
 ENTRYPOINT ["/entrypoint_code.sh"]
 
+# set the default shell
+SHELL ["/bin/bash", "-c"]
+
 # source ros for every new terminal session
-RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+RUN echo "source /opt/ros/melodic/setup.bash" >> /.bashrc
 
 # set our workdir
 WORKDIR /workspace
