@@ -40,6 +40,9 @@ After that you can start the service again.
   - to open the IDE, simply open the browser and go to `localhost:80`. The password is currently set to `dev@ros`. 
   - to see rviz or some other gui stuff, open another browser tab `localhost:6080/vnc.html` and click connect.
 
+## Data storage
+Per default all perisistent data is located at the host pc (assuming windows for now) under `C:/ros-persistent-data`. Create this folder **before** starting the container.
+
 ## Configuration
 The environment comes shipped with a `docker-compose.yaml` to start the service and manage some parameters:
 
@@ -49,8 +52,14 @@ services:
     headless-ros-vnc:
         ports:
             - '80:8080'
-            - '5900:5900'
+            #- '5900:5900'
             - '6080:6080'
+        volumes:
+            - type: bind
+              source: C:/ros-persistent-data
+              target: /my_ros_data
+              volume:
+                nocopy: true
         image: johannhaselberger/headless-ros-vnc
 ```
 
