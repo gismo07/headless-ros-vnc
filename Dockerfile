@@ -31,7 +31,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     xvfb \
     x11vnc \
     g++-8 && \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 && \
+    rm -rf /var/lib/apt/lists/*
     
 # get mesa (using 19.0.2 as later versions dont use the configure script)
 WORKDIR /mesa
@@ -68,7 +69,7 @@ COPY --from=builder /usr/local /usr/local
 
 RUN /bin/bash -c "source /opt/ros/melodic/setup.bash"
 
-# update ubuntu and install all vtd dependencies
+# update ubuntu and install all dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         xterm \
         #freeglut3 \
@@ -87,20 +88,25 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         llvm-7-dev \
         expat \
         nano \
-        dos2unix 
-
-# copy some needed libs
-COPY ./vtdDeb vtdDeb/
-
-# update ubuntu and install some ros packages
-RUN apt-get install -y \
+        dos2unix \
         ros-melodic-image-transport \
         ros-melodic-cv-bridge \
         python-pip \
         libxkbfile-dev \
         libsecret-1-dev \
-        dos2unix && \
-    dpkg -i /vtdDeb/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb
+        dos2unix \
+        wget \
+        ros-melodic-rqt \
+        ros-melodic-rqt* \
+        jwm \
+        ros-melodic-rviz &&\
+        rm -rf /var/lib/apt/lists/*
+
+# copy some needed libs
+COPY ./libs libs/
+
+# insatll libpng12
+RUN dpkg -i /libs/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb
 
 # install all needed python packages
 RUN pip install \
@@ -111,14 +117,10 @@ RUN pip install \
         h5py
 
 # get vs code server
-RUN apt-get install wget && mkdir /code-server && \ 
+RUN mkdir /code-server &&\ 
     wget -qO- https://github.com/cdr/code-server/releases/download/2.1523-vsc1.38.1/code-server2.1523-vsc1.38.1-linux-x86_64.tar.gz \
     | tar xvz --strip-components=1 -C /code-server
 
-
-# get some rqt tools and of course rviz
-RUN apt-get install -y ros-melodic-rqt ros-melodic-rqt*
-RUN apt-get install -y jwm openbox ros-melodic-rviz
 
 # get and setup novnc
 WORKDIR /novnc
@@ -138,9 +140,9 @@ ENV DISPLAY=":99" \
     PASSWORD="dev@ros"
 
 # setup the entrypoint script (starts the xvfb and vnc session)
-COPY ./entrypoint_code.sh /
-RUN dos2unix /entrypoint_code.sh && chmod +x /entrypoint_code.sh
-ENTRYPOINT ["/entrypoint_code.sh"]
+COPY ./entrypoint_code.sh /entry/
+RUN dos2unix /entry/entrypoint_code.sh && chmod +x /entry/entrypoint_code.sh
+ENTRYPOINT ["/entry/entrypoint_code.sh"]
 
 # set the default shell
 SHELL ["/bin/bash", "-c"]
