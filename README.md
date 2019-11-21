@@ -1,3 +1,6 @@
+# DEPRECATED
+Please use the new repo: https://github.com/gismo07/coros
+
 # Headless ROS environment
 Jumpstart ROS developent with no headache! Full browser support. OpenGL support with no need of a physically atachted GPU.
 
